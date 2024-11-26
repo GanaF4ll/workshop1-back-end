@@ -5,21 +5,20 @@ services:
       dockerfile: ./Dockerfile
     container_name: api
     environment:
-      - LOCAL_DB_URI=${LOCAL_DB_URI}
-      - PORT=${PORT}
-      - FRONT_URL_PROD=${FRONT_URL_PROD}
-      - FRONT_URL_DEV=${FRONT_URL_DEV}
-      - WOOCOMMERCE_URL=${WOOCOMMERCE_URL}
-      - WOOCOMMERCE_USER_KEY=${WOOCOMMERCE_USER_KEY}
-      - WOOCOMMERCE_SECRET_KEY=${WOOCOMMERCE_SECRET_KEY}
+      LOCAL_DB_URI: 'mongodb://mongo/workshop1'
+      PORT: 4000
+      FRONT_URL_DEV: 'http://localhost:3000'
+      WOOCOMMERCE_URL: ${WOOCOMMERCE_URL}
+      WOOCOMMERCE_USER_KEY: ${WOOCOMMERCE_USER_KEY}
+      WOOCOMMERCE_SECRET_KEY: ${WOOCOMMERCE_SECRET_KEY}
     depends_on:
       - mongo
     ports:
-      - '3000:3000'
+      - '4000:4000'
     volumes:
       - ${PWD}/src:/usr/src/app/src
     networks:
-      - workshop1-backend
+      - back
     restart: always
 
   mongo:
@@ -29,9 +28,9 @@ services:
     volumes:
       - ${PWD}/mongodb:/data/db
     networks:
-      - workshop1-backend
+      - back
     restart: always
 
 networks:
-  workshop1-backend:
-    driver: bridge
+  back:
+    name: 'back'
